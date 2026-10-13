@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>FacuWatch</title>
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="FacuWatch">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="icon" href="icon-512.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1 id="titulo">Hoy</h1>
+    <button id="estado" class="pill" type="button">Conectar</button>
+  </header>
+
+  <main>
+    <!-- HOY -->
+    <section id="v-hoy" class="vista activa">
+      <div id="aviso-bluefy" class="bloque aviso" hidden>
+        <div class="etq">Abrila en Bluefy</div>
+        <p>Safari no permite Bluetooth en páginas web. Para hablar con el reloj, abrí
+          esta misma dirección en la app <b>Bluefy</b> (gratis en la App Store).</p>
+      </div>
+
+      <div class="anillo-hero" id="anillo-pasos" role="button" tabindex="0"
+           aria-label="Pasos de hoy; tocá para cambiar la meta">
+        <svg viewBox="0 0 200 200" aria-hidden="true">
+          <circle cx="100" cy="100" r="86" class="pista"/>
+          <circle cx="100" cy="100" r="86" class="progreso" id="arco-pasos"/>
+        </svg>
+        <div class="anillo-centro">
+          <div class="num" id="pasos">—</div>
+          <div class="sub" id="pasos-meta">pasos</div>
+        </div>
+      </div>
+
+      <button class="btn" id="btn-conectar" type="button">Conectar el reloj</button>
+
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <div class="etq">Pulso</div>
+          <div class="valor"><span id="bpm">—</span><small>BPM</small></div>
+          <div class="pie" id="bpm-ts">sin mediciones</div>
+          <button class="btn" id="btn-pulso" type="button" disabled>Medir ahora</button>
+        </article>
+        <article class="tarjeta">
+          <div class="etq">Batería</div>
+          <div class="valor"><span id="bateria">—</span><small>%</small></div>
+          <div class="barra"><div id="bateria-barra"></div></div>
+          <div class="pie" id="bateria-ts">—</div>
+        </article>
+        <article class="tarjeta">
+          <div class="etq">Distancia</div>
+          <div class="valor"><span id="distancia">—</span><small>m</small></div>
+          <div class="pie">según el reloj</div>
+        </article>
+        <article class="tarjeta">
+          <div class="etq">Calorías</div>
+          <div class="valor"><span id="calorias">—</span><small>kcal</small></div>
+          <div class="pie">según el reloj</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- HISTORIAL -->
+    <section id="v-historial" class="vista">
+      <div class="bloque">
+        <div class="etq">Pasos · últimos 7 días</div>
+        <div id="graf-pasos" class="grafico"></div>
+      </div>
+      <div class="bloque">
+        <div class="etq">Pulso promedio · últimos 7 días</div>
+        <div id="graf-pulso" class="grafico"></div>
+      </div>
+      <div class="bloque aviso">
+        <div class="etq">Tus datos</div>
+        <p id="txt-datos">Se guardan solo en este iPhone.</p>
+        <button class="btn btn-sec" id="btn-exportar-datos" type="button">Exportar copia de seguridad</button>
+      </div>
+    </section>
+
+    <!-- ASISTENTE -->
+    <section id="v-ia" class="vista">
+      <div id="chat" class="chat">
+        <div class="msg ia">Hola, Facu. Preguntame por tus pasos, tu pulso o pedime un consejo para hoy. Respondo con tus datos, desde el teléfono.</div>
+      </div>
+      <div class="sugerencias">
+        <button class="chip" type="button" data-p="¿Cómo vengo con los pasos esta semana?">Pasos de la semana</button>
+        <button class="chip" type="button" data-p="¿Cómo está mi pulso?">Mi pulso</button>
+        <button class="chip" type="button" data-p="Dame un consejo para hoy">Consejo de hoy</button>
+        <button class="chip" type="button" data-p="¿Cómo dormí esta semana?">Mi sueño</button>
+      </div>
+      <form id="form-ia" class="entrada">
+        <input id="pregunta" autocomplete="off" maxlength="300" placeholder="Preguntale a FacuWatch…">
+        <button class="enviar" aria-label="Enviar">↑</button>
+      </form>
+    </section>
+
+    <!-- ESFERAS -->
+    <section id="v-temas" class="vista">
+      <div class="preview-grande">
+        <div id="tema-preview"></div>
+        <div class="tema-info">
+          <div class="pie" id="tema-linea"></div>
+          <div class="tema-nombre" id="tema-nombre">—</div>
+          <div class="pie" id="tema-desc"></div>
+          <div class="acentos" id="tema-acentos"></div>
+        </div>
+      </div>
+
+      <div class="filtros" id="filtros"></div>
+      <div class="galeria" id="galeria"></div>
+
+      <div class="bloque aviso">
+        <div class="etq">En el reloj</div>
+        <p id="txt-aplicar">Para llevar este diseño al reloj, guardá el fondo y ponelo como
+          <b>esfera con foto</b> en Da Fit: el reloj dibuja la hora encima. Cambiar entre
+          las esferas que trae el reloj llega en el próximo paso.</p>
+        <div class="fila-dato">
+          <span>Esfera puesta en el reloj</span>
+          <b id="esfera-reloj" class="sin-dato">–</b>
+        </div>
+        <button class="btn btn-sec" id="btn-leer-esfera" type="button" disabled>Leer esfera del reloj</button>
+        <button class="btn" id="btn-exportar" type="button">Guardar fondo para Da Fit</button>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="Secciones">
+    <button type="button" data-v="hoy" class="activa"><span class="ico">◉</span>Hoy</button>
+    <button type="button" data-v="historial"><span class="ico">▤</span>Historial</button>
+    <button type="button" data-v="ia"><span class="ico">✦</span>Asistente</button>
+    <button type="button" data-v="temas"><span class="ico">◐</span>Esferas</button>
+  </nav>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

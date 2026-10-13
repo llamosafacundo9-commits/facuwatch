@@ -1,0 +1,407 @@
+[
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "pure",
+  "nombre": "Pure",
+  "linea": "minimal",
+  "tipo": "digital",
+  "descripcion": "Hora enorme, fecha arriba y batería mínima.",
+  "acentos": [
+   {
+    "nombre": "Lima",
+    "color": "#C6F432"
+   },
+   {
+    "nombre": "Blanco",
+    "color": "#FFFFFF"
+   },
+   {
+    "nombre": "Celeste",
+    "color": "#5AC8FA"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "mono",
+  "nombre": "Mono",
+  "linea": "minimal",
+  "tipo": "mono",
+  "descripcion": "Horas y minutos apilados: uno pesado, otro liviano.",
+  "acentos": [
+   {
+    "nombre": "Lima",
+    "color": "#C6F432"
+   },
+   {
+    "nombre": "Gris",
+    "color": "#8E8E93"
+   },
+   {
+    "nombre": "Coral",
+    "color": "#FF6B5B"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "punto",
+  "nombre": "Punto",
+  "linea": "minimal",
+  "tipo": "punto",
+  "descripcion": "La hora es un punto que orbita; al centro, los minutos.",
+  "acentos": [
+   {
+    "nombre": "Naranja",
+    "color": "#FF9F0A"
+   },
+   {
+    "nombre": "Celeste",
+    "color": "#64D2FF"
+   },
+   {
+    "nombre": "Blanco",
+    "color": "#FFFFFF"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "orbit",
+  "nombre": "Orbit",
+  "linea": "minimal",
+  "tipo": "analogico",
+  "descripcion": "Analógico limpio: índices finos y un segundero de color.",
+  "acentos": [
+   {
+    "nombre": "Naranja",
+    "color": "#FF9F0A"
+   },
+   {
+    "nombre": "Celeste",
+    "color": "#64D2FF"
+   },
+   {
+    "nombre": "Menta",
+    "color": "#63E6BE"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "grid",
+  "nombre": "Grid",
+  "linea": "minimal",
+  "tipo": "modular",
+  "descripcion": "Cuatro bloques: hora, fecha, pasos y pulso.",
+  "acentos": [
+   {
+    "nombre": "Azul",
+    "color": "#0A84FF"
+   },
+   {
+    "nombre": "Verde",
+    "color": "#30D158"
+   },
+   {
+    "nombre": "Violeta",
+    "color": "#BF5AF2"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "night",
+  "nombre": "Night",
+  "linea": "minimal",
+  "tipo": "noche",
+  "descripcion": "Modo noche: rojo tenue sobre negro.",
+  "acentos": [
+   {
+    "nombre": "Rojo tenue",
+    "color": "#B3261E"
+   },
+   {
+    "nombre": "Granate",
+    "color": "#7F1D1D"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "bloque",
+  "nombre": "Bloque",
+  "linea": "brutal",
+  "tipo": "bloque",
+  "descripcion": "Números gigantes y una franja de color sin concesiones.",
+  "acentos": [
+   {
+    "nombre": "Naranja señal",
+    "color": "#FF5F1F"
+   },
+   {
+    "nombre": "Blanco",
+    "color": "#F2F2F2"
+   },
+   {
+    "nombre": "Azul Klein",
+    "color": "#2440FF"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#111111",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#242424",
+  "superficie": "#1C1C1E",
+  "id": "concreto",
+  "nombre": "Concreto",
+  "linea": "brutal",
+  "tipo": "concreto",
+  "descripcion": "Grilla técnica, tipografía mono y datos en crudo.",
+  "acentos": [
+   {
+    "nombre": "Ácido",
+    "color": "#D7FF3A"
+   },
+   {
+    "nombre": "Rojo",
+    "color": "#FF3B30"
+   },
+   {
+    "nombre": "Blanco",
+    "color": "#FFFFFF"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "senal",
+  "nombre": "Señal",
+  "linea": "brutal",
+  "tipo": "senal",
+  "descripcion": "Fondo de color pleno, negro encima. Se lee a un kilómetro.",
+  "acentos": [
+   {
+    "nombre": "Amarillo",
+    "color": "#FFD60A"
+   },
+   {
+    "nombre": "Naranja",
+    "color": "#FF6A00"
+   },
+   {
+    "nombre": "Blanco",
+    "color": "#F5F5F0"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#050B18",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "regent",
+  "nombre": "Regent",
+  "linea": "elegante",
+  "tipo": "romano",
+  "descripcion": "Esfera azul noche, números romanos y agujas dauphine en oro.",
+  "fondo2": "#13284A",
+  "sombra": "#8A6A2A",
+  "acentos": [
+   {
+    "nombre": "Oro",
+    "color": "#D4AF6A"
+   },
+   {
+    "nombre": "Oro rosa",
+    "color": "#E3A68C"
+   },
+   {
+    "nombre": "Plata",
+    "color": "#D9DDE3"
+   }
+  ],
+  "fuente": "Cormorant Garamond"
+ },
+ {
+  "fondo": "#E6DDC8",
+  "texto": "#1B2A4A",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "marfil",
+  "nombre": "Marfil",
+  "linea": "elegante",
+  "tipo": "romano",
+  "descripcion": "Esfera marfil de vestir con romanos en azul profundo.",
+  "fondo2": "#FAF6EC",
+  "sombra": "#0B1630",
+  "acentos": [
+   {
+    "nombre": "Azul profundo",
+    "color": "#1B2A4A"
+   },
+   {
+    "nombre": "Negro",
+    "color": "#151515"
+   },
+   {
+    "nombre": "Bordó",
+    "color": "#5E1A26"
+   }
+  ],
+  "fuente": "Cormorant Garamond"
+ },
+ {
+  "fondo": "#030303",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "gala",
+  "nombre": "Gala",
+  "linea": "elegante",
+  "tipo": "baston",
+  "descripcion": "Negro rayos de sol, índices de bastón aplicados en oro.",
+  "fondo2": "#1E1E1E",
+  "segundero": "#C9A55C",
+  "acentos": [
+   {
+    "nombre": "Oro",
+    "color": "#C9A55C"
+   },
+   {
+    "nombre": "Plata",
+    "color": "#C8CCD2"
+   },
+   {
+    "nombre": "Oro rosa",
+    "color": "#D79A80"
+   }
+  ],
+  "fuente": "Cormorant Garamond"
+ },
+ {
+  "fondo": "#03140D",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "esmeralda",
+  "nombre": "Esmeralda",
+  "linea": "elegante",
+  "tipo": "baston",
+  "descripcion": "Verde profundo con oro: para una ocasión especial.",
+  "fondo2": "#0E3A27",
+  "segundero": "#E8C77A",
+  "acentos": [
+   {
+    "nombre": "Oro",
+    "color": "#D9B86A"
+   },
+   {
+    "nombre": "Champagne",
+    "color": "#E9DCC0"
+   }
+  ],
+  "fuente": "Cormorant Garamond"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "pulse",
+  "nombre": "Pulse",
+  "linea": "deporte",
+  "tipo": "anillos",
+  "descripcion": "Tres anillos propios: pasos, pulso y batería.",
+  "acentos": [
+   {
+    "nombre": "Coral",
+    "color": "#FF6B5B"
+   },
+   {
+    "nombre": "Magenta",
+    "color": "#FF375F"
+   },
+   {
+    "nombre": "Ámbar",
+    "color": "#FFB340"
+   }
+  ],
+  "fuente": "Inter"
+ },
+ {
+  "fondo": "#000000",
+  "texto": "#FFFFFF",
+  "secundario": "#8E8E93",
+  "terciario": "#3A3A3C",
+  "superficie": "#1C1C1E",
+  "id": "sprint",
+  "nombre": "Sprint",
+  "linea": "deporte",
+  "tipo": "sprint",
+  "descripcion": "Hora en itálica, segundero de 60 segmentos y datos al pie.",
+  "acentos": [
+   {
+    "nombre": "Lima",
+    "color": "#C6F432"
+   },
+   {
+    "nombre": "Cian",
+    "color": "#32D7F4"
+   },
+   {
+    "nombre": "Naranja",
+    "color": "#FF7A1A"
+   }
+  ],
+  "fuente": "Inter"
+ }
+]
