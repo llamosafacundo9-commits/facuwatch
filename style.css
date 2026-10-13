@@ -88,6 +88,22 @@ button.pill { border: 0; font-family: var(--fuente); cursor: pointer; }
 .esfera-num b { display: block; font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums; }
 .esfera-num b.sin-dato { font-weight: 300; }
 .esfera-num span { color: var(--secundario); font-size: 12px; }
+.etq-sub { margin-top: 14px; font-size: 11px; }
+.numeros { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 8px 0 4px; }
+.numeros button {
+  aspect-ratio: 1; border-radius: 12px; border: 1px solid var(--terciario); background: transparent;
+  color: var(--texto); font: 700 15px var(--fuente); font-variant-numeric: tabular-nums;
+}
+.numeros button.sel { background: var(--acento); color: #000; border-color: var(--acento); }
+.numeros button.no { color: var(--terciario); text-decoration: line-through; }
+.numeros button:disabled { opacity: .45; }
+.registro { margin-top: 14px; }
+.registro summary { color: var(--secundario); font-size: 13px; cursor: pointer; }
+.registro pre {
+  max-height: 220px; overflow: auto; background: #0a0a0a; border-radius: 12px; padding: 10px;
+  font: 11px/1.5 ui-monospace, Menlo, monospace; color: #c7c7cc; white-space: pre-wrap; word-break: break-all;
+}
+.version { text-align: center; color: var(--terciario); font-size: 11px; margin: 18px 0 0; }
 .fila-dato { display: flex; justify-content: space-between; align-items: baseline;
   padding: 10px 0 2px; border-top: 1px solid var(--superficie-2); font-size: 15px; }
 .fila-dato span { color: var(--secundario); }

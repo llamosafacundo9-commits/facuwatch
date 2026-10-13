@@ -1,11 +1,11 @@
-// FacuWatch — app del iPhone. Habla DIRECTO con el reloj (Web Bluetooth en
+﻿// FacuWatch — app del iPhone. Habla DIRECTO con el reloj (Web Bluetooth en
 // Bluefy) y guarda todo en el teléfono. No necesita la Mac ni la PC.
 "use strict";
 
-import { Reloj, hayBluetooth } from "./reloj.js";
-import * as datos from "./datos.js";
-import { responder } from "./asistente.js";
-import { esferaSVG, LINEAS } from "./esferas.js";
+import { Reloj, hayBluetooth } from "./reloj.js?v=20261013c";
+import * as datos from "./datos.js?v=20261013c";
+import { responder } from "./asistente.js?v=20261013c";
+import { esferaSVG, LINEAS } from "./esferas.js?v=20261013c";
 
 const $ = (s) => document.querySelector(s);
 const TITULOS = { hoy: "Hoy", historial: "Historial", ia: "Asistente", temas: "Esferas" };
@@ -256,6 +256,15 @@ function pintarEsferaReloj() {
   num("#esfera-reloj", esferaActual, (n) => `Nº ${n}`);
   num("#esfera-original", original, (n) => `Nº ${n}`);
   const listo = reloj.conectado && !ocupado;
+  // Botones directos 0..6: funcionan aunque la lectura haya fallado.
+  const cont = $("#numeros-esfera");
+  cont.innerHTML = Array.from({ length: ESFERA_MAX - ESFERA_MIN + 1 }, (_, i) => {
+    const n = ESFERA_MIN + i;
+    const cls = n === esferaActual ? "sel" : rechazadas.has(n) ? "no" : "";
+    return `<button type="button" class="${cls}" data-n="${n}" ${listo ? "" : "disabled"}>${n}</button>`;
+  }).join("");
+  cont.querySelectorAll("button").forEach((b) =>
+    b.addEventListener("click", () => conReloj(() => ponerEsfera(+b.dataset.n))));
   $("#btn-leer-esfera").disabled = !listo;
   $("#btn-esfera-ant").disabled = !listo || esferaActual == null;
   $("#btn-esfera-sig").disabled = !listo || esferaActual == null;
@@ -282,16 +291,25 @@ async function leerEsfera() {
 const rechazadas = new Set(leer("esferasRechazadas", []));
 
 async function ponerEsfera(n) {
-  const r = await reloj.ponerEsfera(n);              // 0x19 + verificación con 0x29
+  let r;
+  try {
+    r = await reloj.ponerEsfera(n);                  // 0x19 + verificación con 0x29
+  } catch (e) {
+    // El cambio se envió pero no pudimos verificarlo: no marcamos nada como rechazado.
+    toast(`Envié la Nº ${n}, pero no pude confirmar: ${e.message}`);
+    return;
+  }
   esferaActual = r.esfera ?? esferaActual;
   guardarPref("esferaReloj", esferaActual);
+  if (leer("esferaOriginal", null) == null && r.esfera != null) guardarPref("esferaOriginal", r.esfera);
   if (r.esfera === n) {
+    rechazadas.delete(n);
     toast(`Listo: esfera Nº ${n} en el reloj`);
   } else {
     rechazadas.add(n);
-    guardarPref("esferasRechazadas", [...rechazadas]);
-    toast(`El reloj no tiene la Nº ${n} (sigue la Nº ${r.esfera})`);
+    toast(`El reloj sigue en la Nº ${r.esfera}: no aplicó la Nº ${n}`);
   }
+  guardarPref("esferasRechazadas", [...rechazadas]);
 }
 
 /** Próxima esfera en la dirección `paso` (+1 / -1), salteando las rechazadas. */
@@ -317,6 +335,20 @@ $("#btn-esfera-original").addEventListener("click", () => conReloj(() =>
 // Al conectar, leer sola la esfera puesta (así las flechas quedan listas).
 reloj.addEventListener("conectado", () => conReloj(leerEsfera));
 reloj.addEventListener("desconectado", pintarEsferaReloj);
+
+/* ----- Registro Bluetooth (para diagnosticar desde el teléfono) ----- */
+const registro = [];
+reloj.addEventListener("trafico", (e) => {
+  const { dir, donde, hex } = e.detail;
+  const h = new Date().toLocaleTimeString("es-AR", { hour12: false });
+  registro.push(`${h} ${dir} ${donde}  ${hex}`);
+  if (registro.length > 80) registro.shift();
+  $("#registro").textContent = registro.join("\n");
+});
+$("#btn-copiar-registro").addEventListener("click", async () => {
+  try { await navigator.clipboard.writeText(registro.join("\n")); toast("Registro copiado"); }
+  catch { toast("No pude copiar: mandame una captura del registro"); }
+});
 
 $("#btn-exportar").addEventListener("click", () => {
   const t = temaActual();

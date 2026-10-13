@@ -1,4 +1,4 @@
-// Conexión directa iPhone ⇄ reloj con Web Bluetooth (dentro de Bluefy).
+﻿// Conexión directa iPhone ⇄ reloj con Web Bluetooth (dentro de Bluefy).
 // Mismas reglas que el agente de la Mac: solo comandos de la lista blanca,
 // y si un comando activa algo, SIEMPRE se envía "detener" al final.
 "use strict";
@@ -6,9 +6,13 @@
 import {
   UUID, MTU, armarPaquete, fragmentar, Reensamblador, leerPasos,
   obtenerComando, interpretar, payloadDe, PacketError,
-} from "./moyoung.js";
+} from "./moyoung.js?v=20261013c";
 
 export const hayBluetooth = () => typeof navigator !== "undefined" && !!navigator.bluetooth;
+
+/** Bytes EXACTOS de un DataView. Ojo: su .buffer puede ser más grande que la vista. */
+export const bytesDe = (v) => new Uint8Array(v.buffer, v.byteOffset, v.byteLength);
+const hexDe = (b) => Array.from(b, (x) => x.toString(16).padStart(2, "0")).join(" ");
 
 export class Reloj extends EventTarget {
   constructor() {
@@ -43,7 +47,9 @@ export class Reloj extends EventTarget {
     this.chars.dataIn.addEventListener("characteristicvaluechanged", (e) => this._alRecibir(e));
     await this.chars.dataIn.startNotifications();
     this.chars.pasos.addEventListener("characteristicvaluechanged", (e) => {
-      try { this.emitir("pasos", leerPasos(new Uint8Array(e.target.value.buffer))); }
+      const b = bytesDe(e.target.value);
+      this.emitir("trafico", { dir: "←", donde: "fee1", hex: hexDe(b) });
+      try { this.emitir("pasos", leerPasos(b)); }
       catch (err) { this.emitir("aviso", err.message); }
     });
     await this.chars.pasos.startNotifications();
@@ -68,15 +74,20 @@ export class Reloj extends EventTarget {
   async leerBateria() {
     if (!this.chars.bateria) return null;
     const v = await this.chars.bateria.readValue();
-    const p = v.getUint8(0);
+    const p = bytesDe(v)[0];
     if (p <= 100) this.emitir("bateria", { porcentaje: p });
     return p;
   }
 
   _alRecibir(e) {
+    const b = bytesDe(e.target.value);
+    this.emitir("trafico", { dir: "←", donde: "fee3", hex: hexDe(b) });
     let paquetes;
-    try { paquetes = this.reens.agregar(new Uint8Array(e.target.value.buffer)); }
-    catch (err) { if (err instanceof PacketError) this.emitir("aviso", err.message); return; }
+    try { paquetes = this.reens.agregar(b); }
+    catch (err) {
+      if (err instanceof PacketError) this.emitir("trafico", { dir: "!", donde: "fee3", hex: err.message });
+      return;
+    }
     for (const p of paquetes) {
       if (this.esperando && p.comando === this.esperando.codigo) {
         this.esperando.resolver(p);
@@ -87,7 +98,13 @@ export class Reloj extends EventTarget {
 
   async _escribir(paquete) {
     for (const trozo of fragmentar(paquete, MTU)) {
-      await this.chars.dataOut.writeValueWithResponse(trozo);
+      this.emitir("trafico", { dir: "→", donde: "fee2", hex: hexDe(trozo) });
+      try {
+        await this.chars.dataOut.writeValueWithResponse(trozo);
+      } catch (err) {
+        this.emitir("trafico", { dir: "!", donde: "fee2", hex: `error al escribir: ${err.message}` });
+        throw err;
+      }
     }
   }
 

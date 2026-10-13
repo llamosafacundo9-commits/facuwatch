@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
@@ -12,7 +12,7 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icon-180.png">
   <link rel="icon" href="icon-512.png">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261013c">
 </head>
 <body>
   <header class="top">
@@ -130,8 +130,15 @@
           <button class="flecha" id="btn-esfera-sig" type="button" aria-label="Esfera siguiente" disabled>›</button>
         </div>
         <div class="fila-dato"><span>Original</span><b id="esfera-original" class="sin-dato">–</b></div>
+        <div class="etq etq-sub">Ir directo a</div>
+        <div class="numeros" id="numeros-esfera"></div>
         <button class="btn btn-sec" id="btn-leer-esfera" type="button" disabled>Leer esfera del reloj</button>
         <button class="btn btn-sec" id="btn-esfera-original" type="button" disabled>Volver a la original</button>
+        <details class="registro">
+          <summary>Registro Bluetooth</summary>
+          <pre id="registro">Todavía no hay tráfico.</pre>
+          <button class="btn btn-sec" id="btn-copiar-registro" type="button">Copiar registro</button>
+        </details>
       </div>
 
       <div class="bloque aviso">
@@ -151,7 +158,8 @@
     <button type="button" data-v="temas"><span class="ico">◐</span>Esferas</button>
   </nav>
 
+  <p class="version">FacuWatch · versión 2026.10.13-c</p>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
-  <script type="module" src="js/app.js"></script>
+  <script type="module" src="js/app.js?v=20261013c"></script>
 </body>
 </html>
