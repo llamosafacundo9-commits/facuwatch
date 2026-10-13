@@ -77,6 +77,17 @@ button.pill { border: 0; font-family: var(--fuente); cursor: pointer; }
 .filtros { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; scrollbar-width: none; }
 .chip.sel { background: var(--texto); color: #000; border-color: var(--texto); }
 [hidden] { display: none !important; }
+.selector-esfera { display: flex; align-items: center; justify-content: space-between; margin: 8px 0 6px; }
+.flecha {
+  width: 52px; height: 52px; border-radius: 50%; border: 0; font: 300 30px var(--fuente);
+  background: var(--acento); color: #000; line-height: 1; padding-bottom: 4px; cursor: pointer;
+}
+.flecha:disabled { background: var(--superficie-2); color: var(--terciario); cursor: default; }
+.flecha:active:not(:disabled) { transform: scale(.94); }
+.esfera-num { text-align: center; }
+.esfera-num b { display: block; font-size: 40px; font-weight: 800; font-variant-numeric: tabular-nums; }
+.esfera-num b.sin-dato { font-weight: 300; }
+.esfera-num span { color: var(--secundario); font-size: 12px; }
 .fila-dato { display: flex; justify-content: space-between; align-items: baseline;
   padding: 10px 0 2px; border-top: 1px solid var(--superficie-2); font-size: 15px; }
 .fila-dato span { color: var(--secundario); }

@@ -96,9 +96,27 @@ export const COMANDOS = {
     nombre: "CMD_QUERY_DISPLAY_WATCH_FACE", codigo: 0x29, payload: [], espera: 5000,
     aprobado: "2026-10-13", queHace: "Pregunta qué número de esfera está puesta. Solo lectura.",
   },
+  cambiarEsfera: {
+    // Gadgetbridge: MoyoungSettingByte("DISPLAY_WATCH_FACE", 0x29, 0x19) → {value}.
+    // Rango 0..6: el que usa DaFup (cmdSetFace rechaza > 6). Se verifica leyendo 0x29.
+    nombre: "CMD_SET_DISPLAY_WATCH_FACE", codigo: 0x19, payload: null,
+    rango: [0, 6], sinRespuesta: true, espera: 0,
+    aprobado: "2026-10-13",
+    queHace: "Cambia a otra esfera incorporada del reloj. Se vuelve con el número original.",
+  },
   // 0x84 (QUERY_SUPPORT_WATCH_FACE) NO se incluye: en Gadgetbridge está comentado
-  // y marcado como no verificado.
+  // y marcado como no verificado. Tampoco 0x63 (CMD_HS_DFU): es de firmware, nunca.
 };
+
+/** Payload de un comando: fijo, o un valor validado contra su rango. */
+export function payloadDe(c, valor) {
+  if (!c.rango) return Uint8Array.from(c.payload);
+  const [min, max] = c.rango;
+  if (!Number.isInteger(valor) || valor < min || valor > max) {
+    throw new ComandoNoPermitido(`${c.nombre}: valor ${valor} fuera de ${min}..${max}`);
+  }
+  return Uint8Array.of(valor);
+}
 
 export class ComandoNoPermitido extends Error {}
 

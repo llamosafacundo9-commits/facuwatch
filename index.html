@@ -119,15 +119,26 @@
       <div class="galeria" id="galeria"></div>
 
       <div class="bloque aviso">
-        <div class="etq">En el reloj</div>
-        <p id="txt-aplicar">Para llevar este diseño al reloj, guardá el fondo y ponelo como
-          <b>esfera con foto</b> en Da Fit: el reloj dibuja la hora encima. Cambiar entre
-          las esferas que trae el reloj llega en el próximo paso.</p>
-        <div class="fila-dato">
-          <span>Esfera puesta en el reloj</span>
-          <b id="esfera-reloj" class="sin-dato">–</b>
+        <div class="etq">Esferas del reloj</div>
+        <p>Cambiá la esfera del reloj desde acá. Se aplica al instante y siempre podés volver a la original.</p>
+        <div class="selector-esfera">
+          <button class="flecha" id="btn-esfera-ant" type="button" aria-label="Esfera anterior" disabled>‹</button>
+          <div class="esfera-num">
+            <b id="esfera-reloj" class="sin-dato">–</b>
+            <span>esfera puesta</span>
+          </div>
+          <button class="flecha" id="btn-esfera-sig" type="button" aria-label="Esfera siguiente" disabled>›</button>
         </div>
+        <div class="fila-dato"><span>Original</span><b id="esfera-original" class="sin-dato">–</b></div>
         <button class="btn btn-sec" id="btn-leer-esfera" type="button" disabled>Leer esfera del reloj</button>
+        <button class="btn btn-sec" id="btn-esfera-original" type="button" disabled>Volver a la original</button>
+      </div>
+
+      <div class="bloque aviso">
+        <div class="etq">Este diseño en el reloj</div>
+        <p id="txt-aplicar">Por ahora tus diseños llegan al reloj como <b>esfera con foto</b>:
+          guardá el fondo y elegilo en Da Fit (el reloj dibuja la hora encima). Subirlos
+          directo desde FacuWatch está en camino.</p>
         <button class="btn" id="btn-exportar" type="button">Guardar fondo para Da Fit</button>
       </div>
     </section>

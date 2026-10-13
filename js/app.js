@@ -67,7 +67,7 @@ function pintarEstado() {
   pill.textContent = ok ? "Conectado" : "Conectar";
   $("#btn-conectar").hidden = ok;
   $("#btn-pulso").disabled = !ok;
-  $("#btn-leer-esfera").disabled = !ok;
+  pintarEsferaReloj();   // se llama recién desde iniciar(), con todo ya definido
 }
 
 async function pintarHoy() {
@@ -246,26 +246,77 @@ function pintarTemas() {
   }));
 }
 
-$("#btn-leer-esfera").addEventListener("click", async () => {
-  const btn = $("#btn-leer-esfera");
-  btn.disabled = true;
-  try {
-    const r = await reloj.comando("esfera");   // 0x29, solo lectura (aprobado 2026-10-13)
-    const el = $("#esfera-reloj");
-    el.textContent = r.esfera != null ? `Nº ${r.esfera}` : "?";
-    el.classList.toggle("sin-dato", r.esfera == null);
-    guardarPref("esferaReloj", r.esfera ?? null);
-    toast(r.texto);
-  } catch (e) {
-    toast(e.message);
-  } finally {
-    pintarEstado();
-  }
-});
-{
-  const previa = leer("esferaReloj", null);
-  if (previa != null) { $("#esfera-reloj").textContent = `Nº ${previa}`; $("#esfera-reloj").classList.remove("sin-dato"); }
+/* ----- Esferas incorporadas del reloj (0x29 leer / 0x19 cambiar) ----- */
+const ESFERA_MIN = 0, ESFERA_MAX = 6;   // rango que usa DaFup; se verifica leyendo
+let esferaActual = leer("esferaReloj", null);
+let ocupado = false;
+
+function pintarEsferaReloj() {
+  const original = leer("esferaOriginal", null);
+  num("#esfera-reloj", esferaActual, (n) => `Nº ${n}`);
+  num("#esfera-original", original, (n) => `Nº ${n}`);
+  const listo = reloj.conectado && !ocupado;
+  $("#btn-leer-esfera").disabled = !listo;
+  $("#btn-esfera-ant").disabled = !listo || esferaActual == null;
+  $("#btn-esfera-sig").disabled = !listo || esferaActual == null;
+  $("#btn-esfera-original").disabled = !listo || original == null || original === esferaActual;
 }
+
+async function conReloj(tarea) {
+  ocupado = true; pintarEsferaReloj();
+  try { await tarea(); } catch (e) { toast(e.message); }
+  finally { ocupado = false; pintarEsferaReloj(); }
+}
+
+async function leerEsfera() {
+  const r = await reloj.comando("esfera");          // 0x29, solo lectura
+  if (r.esfera == null) throw new Error("El reloj respondió algo inesperado");
+  esferaActual = r.esfera;
+  guardarPref("esferaReloj", esferaActual);
+  // La primera vez que la leemos, la guardamos como "original" para poder volver.
+  if (leer("esferaOriginal", null) == null) guardarPref("esferaOriginal", esferaActual);
+  return esferaActual;
+}
+
+// Números que el reloj no aceptó: las flechas los saltean.
+const rechazadas = new Set(leer("esferasRechazadas", []));
+
+async function ponerEsfera(n) {
+  const r = await reloj.ponerEsfera(n);              // 0x19 + verificación con 0x29
+  esferaActual = r.esfera ?? esferaActual;
+  guardarPref("esferaReloj", esferaActual);
+  if (r.esfera === n) {
+    toast(`Listo: esfera Nº ${n} en el reloj`);
+  } else {
+    rechazadas.add(n);
+    guardarPref("esferasRechazadas", [...rechazadas]);
+    toast(`El reloj no tiene la Nº ${n} (sigue la Nº ${r.esfera})`);
+  }
+}
+
+/** Próxima esfera en la dirección `paso` (+1 / -1), salteando las rechazadas. */
+function proxima(paso) {
+  let n = esferaActual;
+  for (let i = 0; i <= ESFERA_MAX - ESFERA_MIN; i++) {
+    n += paso;
+    if (n > ESFERA_MAX) n = ESFERA_MIN;
+    if (n < ESFERA_MIN) n = ESFERA_MAX;
+    if (!rechazadas.has(n)) return n;
+  }
+  return esferaActual;
+}
+
+$("#btn-leer-esfera").addEventListener("click", () => conReloj(async () => {
+  toast(`El reloj tiene la esfera Nº ${await leerEsfera()}`);
+}));
+$("#btn-esfera-sig").addEventListener("click", () => conReloj(() => ponerEsfera(proxima(+1))));
+$("#btn-esfera-ant").addEventListener("click", () => conReloj(() => ponerEsfera(proxima(-1))));
+$("#btn-esfera-original").addEventListener("click", () => conReloj(() =>
+  ponerEsfera(leer("esferaOriginal", null))));
+
+// Al conectar, leer sola la esfera puesta (así las flechas quedan listas).
+reloj.addEventListener("conectado", () => conReloj(leerEsfera));
+reloj.addEventListener("desconectado", pintarEsferaReloj);
 
 $("#btn-exportar").addEventListener("click", () => {
   const t = temaActual();

@@ -5,7 +5,7 @@
 
 import {
   UUID, MTU, armarPaquete, fragmentar, Reensamblador, leerPasos,
-  obtenerComando, interpretar, PacketError,
+  obtenerComando, interpretar, payloadDe, PacketError,
 } from "./moyoung.js";
 
 export const hayBluetooth = () => typeof navigator !== "undefined" && !!navigator.bluetooth;
@@ -58,6 +58,13 @@ export class Reloj extends EventTarget {
 
   async desconectar() { if (this.conectado) this.device.gatt.disconnect(); }
 
+  /** Cambia a una esfera incorporada y lo VERIFICA leyendo cuál quedó puesta. */
+  async ponerEsfera(numero) {
+    await this.comando("cambiarEsfera", numero);
+    await new Promise((r) => setTimeout(r, 600));   // margen para que el reloj aplique
+    return this.comando("esfera");                  // { esfera, texto }
+  }
+
   async leerBateria() {
     if (!this.chars.bateria) return null;
     const v = await this.chars.bateria.readValue();
@@ -85,20 +92,25 @@ export class Reloj extends EventTarget {
   }
 
   /** Ejecuta un comando de la lista blanca. Los comandos se encolan de a uno. */
-  comando(clave) {
-    const tarea = this.cola.then(() => this._comando(clave));
+  comando(clave, valor) {
+    const tarea = this.cola.then(() => this._comando(clave, valor));
     this.cola = tarea.catch(() => {});
     return tarea;
   }
 
-  async _comando(clave) {
+  async _comando(clave, valor) {
     const c = obtenerComando(clave);   // lanza si no está aprobado
+    const payload = payloadDe(c, valor);   // lanza si el valor está fuera de rango
     if (!this.conectado) throw new Error("El reloj no está conectado");
+    if (c.sinRespuesta) {
+      await this._escribir(armarPaquete(c.codigo, payload));
+      return { texto: `${c.nombre} enviado` };
+    }
     const respuesta = new Promise((resolver) => { this.esperando = { codigo: c.codigo, resolver }; });
     const vence = new Promise((_, rechazar) =>
       setTimeout(() => rechazar(new Error("El reloj no respondió a tiempo")), c.espera));
     try {
-      await this._escribir(armarPaquete(c.codigo, Uint8Array.from(c.payload)));
+      await this._escribir(armarPaquete(c.codigo, payload));
       const p = await Promise.race([respuesta, vence]);
       return interpretar(p);
     } finally {
